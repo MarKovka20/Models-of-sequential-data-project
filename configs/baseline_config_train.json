@@ -1,0 +1,48 @@
+{
+  "experiment_name": "baseline_experiment",
+  "epochs_num": 10,
+  "model": {
+    "type": "baseline",
+    "projector": {
+      "embedding_dim": 32
+    },
+    "encoder": {
+      "hidden_size": 32,
+      "num_heads": 2,
+      "num_layers": 2,
+      "user_cls_only": true,
+      "output_dim": 1
+    }
+  },
+  "dataloader": {
+    "train": {
+      "batch_size": 8,
+      "shuffle": true,
+      "drop_last": true
+    },
+    "val": {
+      "batch_size": 8,
+      "shuffle": true,
+      "drop_last": true
+    }
+  },
+  "callback": {
+    "type": "composite",
+    "callbacks": [
+      {
+        "type": "metric",
+        "on_step": 1,
+        "loss_prefix": "loss"
+      },
+      {
+        "type": "validation",
+        "on_step": 30,
+        "pred_prefix": "logits",
+        "labels_prefix": "labels",
+        "metrics": {
+          "precision": {"type": "precision"}
+        }
+      }
+    ]
+  }
+}
